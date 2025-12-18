@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VisualMath Mentor - See math. Understand math. From school to engineering.">
+    <title>VisualMath Mentor - Interactive Math Learning</title>
+
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Chart.js for graphing -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- App Container -->
+    <div id="app" class="app-container">
+
+        <!-- Onboarding Screen -->
+        <div id="onboarding-screen" class="screen active">
+            <div class="onboarding-content">
+                <div class="logo-container">
+                    <div class="logo-icon">∫</div>
+                    <h1 class="app-title">VisualMath Mentor</h1>
+                </div>
+                <p class="tagline">See math. Understand math.<br>From school to engineering.</p>
+
+                <div class="onboarding-steps">
+                    <div class="step-indicator">
+                        <div class="step active" data-step="1"></div>
+                        <div class="step" data-step="2"></div>
+                        <div class="step" data-step="3"></div>
+                    </div>
+
+                    <!-- Step 1: Welcome -->
+                    <div class="onboarding-step active" data-step="1">
+                        <div class="step-content">
+                            <div class="feature-grid">
+                                <div class="feature-card">
+                                    <div class="feature-icon">📸</div>
+                                    <h3>Scan Problems</h3>
+                                    <p>Take a photo of any math problem</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🎯</div>
+                                    <h3>Step-by-Step</h3>
+                                    <p>Understand every solution step</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🎨</div>
+                                    <h3>Visual Learning</h3>
+                                    <p>See concepts come alive</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">📈</div>
+                                    <h3>Track Progress</h3>
+                                    <p>Master concepts over time</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="nextOnboardingStep()">Get Started</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Level Selection -->
+                    <div class="onboarding-step" data-step="2">
+                        <div class="step-content">
+                            <h2>What are you studying right now?</h2>
+                            <div class="level-selection">
+                                <div class="level-card" data-level="kid" onclick="selectLevel('kid')">
+                                    <div class="level-icon">🎓</div>
+                                    <h3>Class 5-8</h3>
+                                    <p>Basics / Kids</p>
+                                    <span class="level-badge">Simple & Fun</span>
+                                </div>
+                                <div class="level-card" data-level="school" onclick="selectLevel('school')">
+                                    <div class="level-icon">📚</div>
+                                    <h3>Class 9-12</h3>
+                                    <p>High School / Boards</p>
+                                    <span class="level-badge">Exam Ready</span>
+                                </div>
+                                <div class="level-card" data-level="engineering" onclick="selectLevel('engineering')">
+                                    <div class="level-icon">🔬</div>
+                                    <h3>Engineering</h3>
+                                    <p>University Level</p>
+                                    <span class="level-badge">Advanced</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Preferences -->
+                    <div class="onboarding-step" data-step="3">
+                        <div class="step-content">
+                            <h2>Customize Your Experience</h2>
+                            <div class="preferences-list">
+                                <div class="preference-item">
+                                    <div class="preference-info">
+                                        <h3>Simple Language</h3>
+                                        <p>Use everyday words for explanations</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="simple-language" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-info">
+                                        <h3>Dark Mode</h3>
+                                        <p>Easy on the eyes</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="dark-mode">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-info">
+                                        <h3>Show Animations</h3>
+                                        <p>Visual step transitions</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="animations" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="completeOnboarding()">Start Learning</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen">
+            <header class="app-header">
+                <div class="header-left">
+                    <div class="logo-small">∫</div>
+                    <span class="app-name">VisualMath</span>
+                </div>
+                <div class="header-right">
+                    <span class="user-level" id="user-level-badge">School</span>
+                    <button class="icon-btn" onclick="showSettings()">⚙️</button>
+                </div>
+            </header>
+
+            <main class="home-content">
+                <div class="welcome-section">
+                    <h1>Ready to solve some math?</h1>
+                    <p class="subtitle">Scan, type, or practice problems</p>
+                </div>
+
+                <div class="action-cards">
+                    <div class="action-card primary" onclick="showCamera()">
+                        <div class="action-icon">📸</div>
+                        <h2>Scan a Problem</h2>
+                        <p>Take a photo to get started</p>
+                    </div>
+
+                    <div class="action-card" onclick="showTypeProblem()">
+                        <div class="action-icon">✏️</div>
+                        <h2>Type a Problem</h2>
+                        <p>Enter math expression manually</p>
+                    </div>
+
+                    <div class="action-card" onclick="showPracticeMode()">
+                        <div class="action-icon">🎯</div>
+                        <h2>Practice Mode</h2>
+                        <p>Strengthen your skills</p>
+                    </div>
+
+                    <div class="action-card" onclick="showProgress()">
+                        <div class="action-icon">📊</div>
+                        <h2>My Progress</h2>
+                        <p>Track your learning journey</p>
+                    </div>
+                </div>
+
+                <div class="recent-section">
+                    <h3>Recent Problems</h3>
+                    <div id="recent-problems" class="recent-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </main>
+
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-screen="home" onclick="navigateTo('home')">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Home</span>
+                </button>
+                <button class="nav-item" data-screen="practice" onclick="navigateTo('practice')">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-label">Practice</span>
+                </button>
+                <button class="nav-item" data-screen="progress" onclick="navigateTo('progress')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Progress</span>
+                </button>
+                <button class="nav-item" data-screen="settings" onclick="navigateTo('settings')">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Settings</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Camera Screen -->
+        <div id="camera-screen" class="screen">
+            <div class="camera-container">
+                <div class="camera-header">
+                    <button class="icon-btn" onclick="closeCamera()">✕</button>
+                    <h2>Scan Problem</h2>
+                    <button class="icon-btn" onclick="toggleFlash()">💡</button>
+                </div>
+
+                <div class="camera-viewport">
+                    <video id="camera-video" autoplay playsinline></video>
+                    <canvas id="camera-canvas" style="display: none;"></canvas>
+                    <div class="camera-frame">
+                        <div class="frame-corner tl"></div>
+                        <div class="frame-corner tr"></div>
+                        <div class="frame-corner bl"></div>
+                        <div class="frame-corner br"></div>
+                        <p class="frame-hint">Position problem within frame</p>
+                    </div>
+                </div>
+
+                <div class="camera-controls">
+                    <button class="icon-btn" onclick="selectFromGallery()">🖼️</button>
+                    <button class="btn btn-capture" onclick="capturePhoto()">
+                        <span class="capture-ring"></span>
+                    </button>
+                    <button class="icon-btn" onclick="switchCamera()">🔄</button>
+                </div>
+
+                <div class="scanning-overlay" id="scanning-overlay">
+                    <div class="scanning-animation">
+                        <div class="scan-line"></div>
+                    </div>
+                    <p>Analyzing problem...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Type Problem Screen -->
+        <div id="type-screen" class="screen">
+            <div class="type-container">
+                <div class="screen-header">
+                    <button class="icon-btn" onclick="closeTypeProblem()">←</button>
+                    <h2>Type Problem</h2>
+                    <button class="btn btn-sm" onclick="solveProblem()">Solve</button>
+                </div>
+
+                <div class="type-content">
+                    <div class="input-section">
+                        <label for="problem-input">Enter your math problem:</label>
+                        <textarea id="problem-input" class="problem-input"
+                            placeholder="e.g., 2x + 5 = 13&#10;or: ∫(x² + 2x) dx&#10;or: Solve: x² - 5x + 6 = 0"
+                            rows="5"></textarea>
+
+                        <div class="math-keyboard">
+                            <button class="math-key" onclick="insertSymbol('x')">x</button>
+                            <button class="math-key" onclick="insertSymbol('y')">y</button>
+                            <button class="math-key" onclick="insertSymbol('^')">x²</button>
+                            <button class="math-key" onclick="insertSymbol('√')">√</button>
+                            <button class="math-key" onclick="insertSymbol('∫')">∫</button>
+                            <button class="math-key" onclick="insertSymbol('π')">π</button>
+                            <button class="math-key" onclick="insertSymbol('∞')">∞</button>
+                            <button class="math-key" onclick="insertSymbol('≤')">≤</button>
+                            <button class="math-key" onclick="insertSymbol('≥')">≥</button>
+                            <button class="math-key" onclick="insertSymbol('≠')">≠</button>
+                        </div>
+                    </div>
+
+                    <div class="examples-section">
+                        <h3>Example Problems:</h3>
+                        <div class="example-list">
+                            <div class="example-item" onclick="loadExample('2x + 5 = 13')">
+                                <span class="example-text">2x + 5 = 13</span>
+                                <span class="example-tag">Linear</span>
+                            </div>
+                            <div class="example-item" onclick="loadExample('x^2 - 5x + 6 = 0')">
+                                <span class="example-text">x² - 5x + 6 = 0</span>
+                                <span class="example-tag">Quadratic</span>
+                            </div>
+                            <div class="example-item" onclick="loadExample('d/dx(x^3 + 2x)')">
+                                <span class="example-text">d/dx(x³ + 2x)</span>
+                                <span class="example-tag">Calculus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution Screen -->
+        <div id="solution-screen" class="screen">
+            <div class="solution-container">
+                <div class="screen-header">
+                    <button class="icon-btn" onclick="closeSolution()">←</button>
+                    <h2>Solution</h2>
+                    <button class="icon-btn" onclick="shareSolution()">↗️</button>
+                </div>
+
+                <div class="solution-content">
+                    <!-- Problem Header -->
+                    <div class="problem-header">
+                        <div class="problem-preview" id="problem-preview">
+                            <!-- Image thumbnail or typed problem -->
+                        </div>
+                        <div class="problem-meta">
+                            <span class="topic-tag" id="topic-tag">Algebra → Linear Equations</span>
+                            <div class="problem-expression" id="problem-expression">
+                                <!-- LaTeX rendered problem -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Navigation -->
+                    <div class="tab-nav">
+                        <button class="tab-btn active" data-tab="steps" onclick="switchTab('steps')">Steps</button>
+                        <button class="tab-btn" data-tab="visual" onclick="switchTab('visual')">Visual</button>
+                        <button class="tab-btn" data-tab="concepts" onclick="switchTab('concepts')">Concepts</button>
+                    </div>
+
+                    <!-- Steps Tab -->
+                    <div class="tab-content active" data-tab="steps">
+                        <div class="steps-controls">
+                            <button class="btn btn-sm" onclick="toggleAllSteps()">Show All Steps</button>
+                            <button class="btn btn-sm" onclick="trySimlar()">Try Similar</button>
+                        </div>
+
+                        <div class="steps-list" id="steps-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Visual Tab -->
+                    <div class="tab-content" data-tab="visual">
+                        <div class="visualization-container" id="visualization-container">
+                            <!-- Different visualizations based on problem type -->
+                        </div>
+                    </div>
+
+                    <!-- Concepts Tab -->
+                    <div class="tab-content" data-tab="concepts">
+                        <div class="concepts-list" id="concepts-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Mode Screen -->
+        <div id="practice-screen" class="screen">
+            <div class="practice-container">
+                <div class="screen-header">
+                    <button class="icon-btn" onclick="closePractice()">←</button>
+                    <h2>Practice Mode</h2>
+                    <div class="practice-score" id="practice-score">0/0</div>
+                </div>
+
+                <div class="practice-content">
+                    <!-- Topic Selection -->
+                    <div class="topic-selection" id="topic-selection">
+                        <h3>Choose a Topic</h3>
+                        <div class="topic-grid">
+                            <div class="topic-card" onclick="startPractice('linear')">
+                                <h4>Linear Equations</h4>
+                                <p>Solve for x</p>
+                                <div class="difficulty-bar">
+                                    <div class="difficulty-fill" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <div class="topic-card" onclick="startPractice('quadratic')">
+                                <h4>Quadratic Equations</h4>
+                                <p>Roots & factoring</p>
+                                <div class="difficulty-bar">
+                                    <div class="difficulty-fill" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="topic-card" onclick="startPractice('derivatives')">
+                                <h4>Derivatives</h4>
+                                <p>Basic differentiation</p>
+                                <div class="difficulty-bar">
+                                    <div class="difficulty-fill" style="width: 70%"></div>
+                                </div>
+                            </div>
+                            <div class="topic-card" onclick="startPractice('integration')">
+                                <h4>Integration</h4>
+                                <p>Basic integrals</p>
+                                <div class="difficulty-bar">
+                                    <div class="difficulty-fill" style="width: 80%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practice Question -->
+                    <div class="practice-question" id="practice-question" style="display: none;">
+                        <div class="question-header">
+                            <span class="question-number">Question 1 of 5</span>
+                            <span class="question-topic">Linear Equations</span>
+                        </div>
+
+                        <div class="question-content">
+                            <div class="question-text" id="question-text">
+                                <!-- LaTeX rendered question -->
+                            </div>
+
+                            <div class="answer-input">
+                                <label for="user-answer">Your Answer:</label>
+                                <input type="text" id="user-answer" class="answer-field"
+                                    placeholder="Enter your answer">
+                            </div>
+
+                            <div class="question-actions">
+                                <button class="btn btn-secondary" onclick="showHint()">💡 Hint</button>
+                                <button class="btn btn-secondary" onclick="showFullSolution()">📖 Solution</button>
+                                <button class="btn btn-primary" onclick="checkAnswer()">Check Answer</button>
+                            </div>
+
+                            <div class="hint-box" id="hint-box" style="display: none;">
+                                <!-- Hint content -->
+                            </div>
+                        </div>
+
+                        <div class="feedback-box" id="feedback-box" style="display: none;">
+                            <!-- Feedback after answer -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Screen -->
+        <div id="progress-screen" class="screen">
+            <div class="progress-container">
+                <div class="screen-header">
+                    <h2>My Progress</h2>
+                    <button class="btn btn-sm" onclick="exportProgress()">Export</button>
+                </div>
+
+                <div class="progress-content">
+                    <!-- Stats Overview -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-value" id="problems-solved">0</div>
+                            <div class="stat-label">Problems Solved</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-value" id="time-spent">0h</div>
+                            <div class="stat-label">Time Spent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-value" id="streak-days">0</div>
+                            <div class="stat-label">Day Streak</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-value" id="mastery-score">0%</div>
+                            <div class="stat-label">Avg Mastery</div>
+                        </div>
+                    </div>
+
+                    <!-- Concept Mastery -->
+                    <div class="mastery-section">
+                        <h3>Concept Mastery</h3>
+                        <div class="mastery-list" id="mastery-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Activity Chart -->
+                    <div class="chart-section">
+                        <h3>Activity Over Time</h3>
+                        <canvas id="activity-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings-screen" class="screen">
+            <div class="settings-container">
+                <div class="screen-header">
+                    <button class="icon-btn" onclick="closeSettings()">←</button>
+                    <h2>Settings</h2>
+                </div>
+
+                <div class="settings-content">
+                    <div class="settings-section">
+                        <h3>Learning Level</h3>
+                        <div class="level-selector">
+                            <button class="level-btn" data-level="kid" onclick="changeLevel('kid')">Kids (5-8)</button>
+                            <button class="level-btn active" data-level="school" onclick="changeLevel('school')">School
+                                (9-12)</button>
+                            <button class="level-btn" data-level="engineering"
+                                onclick="changeLevel('engineering')">Engineering</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Preferences</h3>
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <span>Simple Language</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="setting-simple-language" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Dark Mode</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="setting-dark-mode">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Animations</span>
+                                <label class="toggle-switch">
+                                    <div class="steps-list" id="steps-list">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                            </div>
+
+                            <!-- Visual Tab -->
+                            <div class="tab-content" data-tab="visual">
+                                <div class="visualization-container" id="visualization-container">
+                                    <!-- Different visualizations based on problem type -->
+                                </div>
+                            </div>
+
+                            <!-- Concepts Tab -->
+                            <div class="tab-content" data-tab="concepts">
+                                <div class="concepts-list" id="concepts-list">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice Mode Screen -->
+                <div id="practice-screen" class="screen">
+                    <div class="practice-container">
+                        <div class="screen-header">
+                            <button class="icon-btn" onclick="closePractice()">←</button>
+                            <h2>Practice Mode</h2>
+                            <div class="practice-score" id="practice-score">0/0</div>
+                        </div>
+
+                        <div class="practice-content">
+                            <!-- Topic Selection -->
+                            <div class="topic-selection" id="topic-selection">
+                                <h3>Choose a Topic</h3>
+                                <div class="topic-grid">
+                                    <div class="topic-card" onclick="startPractice('linear')">
+                                        <h4>Linear Equations</h4>
+                                        <p>Solve for x</p>
+                                        <div class="difficulty-bar">
+                                            <div class="difficulty-fill" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="topic-card" onclick="startPractice('quadratic')">
+                                        <h4>Quadratic Equations</h4>
+                                        <p>Roots & factoring</p>
+                                        <div class="difficulty-bar">
+                                            <div class="difficulty-fill" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="topic-card" onclick="startPractice('derivatives')">
+                                        <h4>Derivatives</h4>
+                                        <p>Basic differentiation</p>
+                                        <div class="difficulty-bar">
+                                            <div class="difficulty-fill" style="width: 70%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="topic-card" onclick="startPractice('integration')">
+                                        <h4>Integration</h4>
+                                        <p>Basic integrals</p>
+                                        <div class="difficulty-bar">
+                                            <div class="difficulty-fill" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Practice Question -->
+                            <div class="practice-question" id="practice-question" style="display: none;">
+                                <div class="question-header">
+                                    <span class="question-number">Question 1 of 5</span>
+                                    <span class="question-topic">Linear Equations</span>
+                                </div>
+
+                                <div class="question-content">
+                                    <div class="question-text" id="question-text">
+                                        <!-- LaTeX rendered question -->
+                                    </div>
+
+                                    <div class="answer-input">
+                                        <label for="user-answer">Your Answer:</label>
+                                        <input type="text" id="user-answer" class="answer-field"
+                                            placeholder="Enter your answer">
+                                    </div>
+
+                                    <div class="question-actions">
+                                        <button class="btn btn-secondary" onclick="showHint()">💡 Hint</button>
+                                        <button class="btn btn-secondary" onclick="showFullSolution()">📖
+                                            Solution</button>
+                                        <button class="btn btn-primary" onclick="checkAnswer()">Check Answer</button>
+                                    </div>
+
+                                    <div class="hint-box" id="hint-box" style="display: none;">
+                                        <!-- Hint content -->
+                                    </div>
+                                </div>
+
+                                <div class="feedback-box" id="feedback-box" style="display: none;">
+                                    <!-- Feedback after answer -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Screen -->
+                <div id="progress-screen" class="screen">
+                    <div class="progress-container">
+                        <div class="screen-header">
+                            <h2>My Progress</h2>
+                            <button class="btn btn-sm" onclick="exportProgress()">Export</button>
+                        </div>
+
+                        <div class="progress-content">
+                            <!-- Stats Overview -->
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon">🎯</div>
+                                    <div class="stat-value" id="problems-solved">0</div>
+                                    <div class="stat-label">Problems Solved</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">⏱️</div>
+                                    <div class="stat-value" id="time-spent">0h</div>
+                                    <div class="stat-label">Time Spent</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">🔥</div>
+                                    <div class="stat-value" id="streak-days">0</div>
+                                    <div class="stat-label">Day Streak</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">⭐</div>
+                                    <div class="stat-value" id="mastery-score">0%</div>
+                                    <div class="stat-label">Avg Mastery</div>
+                                </div>
+                            </div>
+
+                            <!-- Concept Mastery -->
+                            <div class="mastery-section">
+                                <h3>Concept Mastery</h3>
+                                <div class="mastery-list" id="mastery-list">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Activity Chart -->
+                            <div class="chart-section">
+                                <h3>Activity Over Time</h3>
+                                <canvas id="activity-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Screen -->
+                <div id="settings-screen" class="screen">
+                    <div class="settings-container">
+                        <div class="screen-header">
+                            <button class="icon-btn" onclick="closeSettings()">←</button>
+                            <h2>Settings</h2>
+                        </div>
+
+                        <div class="settings-content">
+                            <div class="settings-section">
+                                <h3>Learning Level</h3>
+                                <div class="level-selector">
+                                    <button class="level-btn" data-level="kid" onclick="changeLevel('kid')">Kids
+                                        (5-8)</button>
+                                    <button class="level-btn active" data-level="school"
+                                        onclick="changeLevel('school')">School
+                                        (9-12)</button>
+                                    <button class="level-btn" data-level="engineering"
+                                        onclick="changeLevel('engineering')">Engineering</button>
+                                </div>
+                            </div>
+
+                            <div class="settings-section">
+                                <h3>Preferences</h3>
+                                <div class="settings-list">
+                                    <div class="setting-item">
+                                        <span>Simple Language</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="setting-simple-language" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-item">
+                                        <span>Dark Mode</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="setting-dark-mode">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-item">
+                                        <span>Animations</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="setting-animations" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-item">
+                                        <span>Sound Effects</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="setting-sounds">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-section">
+                                <h3>🤖 AI Model</h3>
+                                <div class="settings-list">
+                                    <div class="setting-item">
+                                        <div>
+                                            <div style="font-weight: 600;">AI Model Selection</div>
+                                            <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;"
+                                                id="current-model-display">Gemini 2.0 Flash (Experimental)</div>
+                                        </div>
+                                        <button class="btn btn-sm" onclick="showModelSelector()">Change Model</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-section">
+                                <h3>About</h3>
+                                <div class="about-info">
+                                    <p><strong>VisualMath Mentor</strong></p>
+                                    <p>Version 1.0.0</p>
+                                    <p>© 2024 VisualMath Team</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JavaScript Modules -->
+            <script src="js/app.js"></script>
+            <script src="js/navigation.js"></script>
+            <script src="js/camera.js"></script>
+            <script src="js/solver.js"></script>
+            <script src="js/ai-solver.js"></script>
+            <script src="js/visualizations.js"></script>
+            <script src="js/practice.js"></script>
+            <script src="js/progress.js"></script>
+</body>
+
+</html>
