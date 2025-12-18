@@ -9,7 +9,7 @@
 
 const AI_CONFIG = {
     // Get your API key from: https://makersuite.google.com/app/apikey
-    apiKey: 'AIzaSyBIb72TcsnkfJPl6BMp3293K5iH-1GkHO4', // Configured API key
+    apiKey: 'your-api-key', // Configured API key
     baseEndpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
     currentModel: 'gemini-2.0-flash-exp', // Default model
 
@@ -995,3 +995,4 @@ window.getCurrentModel = getCurrentModel;
 window.showModelSelector = showModelSelector;
 window.selectModel = selectModel;
 window.closeModelSelector = closeModelSelector;
+
